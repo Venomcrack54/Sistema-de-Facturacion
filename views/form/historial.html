@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Historial de Facturación</title>
+        <link rel="stylesheet" href="../style/historial.css" />
+    </head>
+    <body>
+        <div class="historial-container">
+            <form>
+                <h2>Historial de Facturación</h2>
+
+                <!-- ================= BUSQUEDA ================= -->
+                <div class="busqueda">
+                    <div>
+                        <label>Cédula / RUC del Cliente</label>
+                        <input type="text" placeholder="Ingrese cédula o RUC" />
+                    </div>
+
+                    <div>
+                        <label>Código de la Factura</label>
+                        <input
+                            type="text"
+                            placeholder="Ingrese código de factura"
+                        />
+                    </div>
+
+                    <div class="btn-buscar">
+                        <button type="button">Buscar</button>
+                    </div>
+                </div>
+
+                <!-- ================= TABLA RESULTADOS ================= -->
+                <table class="tabla-historial">
+                    <thead>
+                        <tr>
+                            <th>-</th>
+                            <th>N° Factura</th>
+                            <th>Fecha</th>
+                            <th>Nombre</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
+                <!-- ================= BOTONES ================= -->
+                <div class="botones">
+                    <a href="menu.html" class="btn-salir">Salir</a>
+                    <button type="button" class="btn-ver">Ver Factura</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Importar Models primero -->
+        <script src="../../models/facturaModel.js"></script>
+        <!-- Luego el Controller -->
+        <script src="../../controllers/historialController.js"></script>
+    </body>
+</html>
