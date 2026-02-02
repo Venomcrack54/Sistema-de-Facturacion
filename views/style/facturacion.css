@@ -1,0 +1,216 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #80b6ec;
+}
+
+.factura-container {
+    width: 900px;
+    margin: 30px auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #000000;
+}
+
+fieldset {
+    margin-bottom: 20px;
+    padding: 25px;
+    border-radius: 6px;
+}
+
+legend {
+    font-weight: bold;
+    padding: 0 10px;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 6px;
+    margin-top: 5px;
+}
+
+.buscar-cliente {
+    display: flex;
+    gap: 10px;
+    padding-bottom: 15px;
+}
+
+.buscar-cliente input {
+    flex: 1;
+}
+
+.buscar-cliente button {
+    padding: 7px 15px;
+    background-color: #17a2b8;
+    color: white;
+    border: 1px solid #000000;
+    cursor: pointer;
+}
+
+.detalle-factura {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.detalle-factura th,
+.detalle-factura td {
+    border: 1px solid #000000;
+    padding: 6px;
+    text-align: center;
+}
+
+.detalle-factura input {
+    width: 100%;
+    border: none;        /* 🔥 elimina los recuadros */
+    outline: none;       /* 🔥 elimina borde al hacer click */
+    text-align: center;
+    background-color: transparent;
+}
+
+.btn-plus {
+    padding: 5px 10px;
+    background-color: #00ff62;
+    color: white;
+    border: 1px solid #000000;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn-minus {
+    padding: 5px 10px;
+    background-color: #ff0000;
+    color: white;
+    border: 1px solid #000000;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.totales {
+    margin-top: 15px;
+    width: 300px;
+    margin-left: auto;
+}
+
+.fila-total {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.fila-total label {
+    width: 120px;          /* ancho fijo del texto */
+    font-weight: bold;
+    padding-left: 10px;
+}
+
+.fila-total .input,
+.fila-total select {
+    flex: 1;
+    padding: 6px;
+}
+
+/* Tamaños especiales para encabezado */
+.input-small {
+    width: 120px !important;   
+    max-width: 120px;
+    text-align: center;
+    font-weight: bold;
+}
+
+
+.input-large {
+    flex: 3;      /* más grande */
+}
+
+.pago select {
+    width: 300px;
+    padding: 6px;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+.botones {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.btn-salir {
+    text-decoration: none;
+    background-color: #6c757d;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    border: 1px solid #000000;
+}
+
+.btn-guardar {
+    background-color: #28a745;
+    color: black;
+    padding: 10px 20px;
+    border: 1px solid #000000;
+    cursor: pointer;
+}
+
+
+
+/* ======== BLOQUE DE TOTALES MEJORADO ======== */
+
+.totales {
+    margin-top: 20px;
+    width: 340px;
+    margin-left: auto;
+
+    /* estilo tipo tarjeta */
+    background: #f8fbff;
+    border: 2px solid #000;
+    border-radius: 10px;
+    padding: 15px;
+
+    box-shadow: 3px 3px 8px rgba(0,0,0,0.2);
+}
+
+.fila-total {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+/* ===== SUBTOTAL E IVA ===== */
+
+#subtotal,
+#iva {
+    text-align: right;
+    font-weight: bold;
+    background-color: #e8f4ff;
+    border: 1px solid #000;
+}
+
+/* ===== TOTAL FINAL (EL PROTAGONISTA) ===== */
+
+#total {
+    text-align: right;
+    font-weight: bold;
+    font-size: 22px;
+
+    color: #0b6623;
+    background-color: #d4ffd4;
+
+    border: 2px solid #0b6623;
+
+    /* efecto importante */
+    box-shadow: 0 0 6px #28a745;
+}
+
+/* Etiquetas más claras */
+.totales label {
+    font-size: 15px;
+    font-weight: bold;
+}
