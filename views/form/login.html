@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Login - Sistema de Facturación</title>
+        <link rel="stylesheet" href="../style/login.css" />
+    </head>
+    <body>
+        <div class="login-container">
+            <h2>Sistema de Facturación</h2>
+
+            <form>
+                <!-- USUARIO -->
+                <div class="form-group">
+                    <label>Usuario</label>
+                    <input
+                        type="text"
+                        placeholder="Ingrese su usuario"
+                        required
+                    />
+                </div>
+
+                <!-- CONTRASEÑA -->
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input
+                        type="password"
+                        placeholder="Ingrese su contraseña"
+                        required
+                    />
+
+                    <div class="password-requisitos" id="passwordRequisitos">
+                        <p id="req-minuscula">• Al menos una letra minúscula</p>
+                        <p id="req-mayuscula">• Al menos una letra mayúscula</p>
+                        <p id="req-numero">• Número o carácter especial</p>
+                        <p id="req-longitud">• Mínimo 8 caracteres</p>
+                    </div>
+                </div>
+
+                <!-- MODAL USUARIO EXISTE -->
+                <div class="modal-overlay" id="modalUsuarioExiste">
+                    <div class="modal">
+                        <div class="modal-icon">⚠️</div>
+                        <h3>Usuario ya registrado</h3>
+                        <p>Este usuario ya existe en el sistema</p>
+                        <button id="btnCerrarModal">Aceptar</button>
+                    </div>
+                </div>
+
+                <!-- ROL -->
+                <div class="form-group">
+                    <label>Rol del Usuario</label>
+                    <select required>
+                        <option value="">-- Seleccione un rol --</option>
+                        <option value="factura">FACTURA</option>
+                        <option value="admin">ADMINISTRADOR</option>
+                        <option value="contabilidad">CONTABILIDAD</option>
+                    </select>
+                </div>
+
+                <!-- BOTÓN -->
+                <button type="submit">Ingresar</button>
+            </form>
+        </div>
+
+        <script src="../../controllers/loginController.js?v=2"></script>
+    </body>
+</html>
