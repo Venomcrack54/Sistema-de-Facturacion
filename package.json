@@ -1,0 +1,24 @@
+{
+  "name": "sistema-facturacion",
+  "version": "1.0.0",
+  "description": "Sistema de Facturación con Node.js, Express y MySQL",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "node --watch server/server.js",
+    "init-db": "node server/config/initDB.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mysql2": "^3.6.5"
+  },
+  "keywords": [
+    "facturacion",
+    "nodejs",
+    "express",
+    "mysql"
+  ],
+  "author": "",
+  "license": "ISC"
+}

@@ -1,6 +1,17 @@
 // ========================================
-// VALIDACIONES DEL FORMULARIO DE LOGIN
+// CONTROLADOR DE LOGIN - CONECTADO AL BACKEND
 // ========================================
+
+// API_BASE compartida entre scripts (evita: redeclaration of const API_BASE)
+if (typeof window !== "undefined") {
+  window.API_BASE =
+    window.API_BASE ||
+    (window.location.origin && window.location.origin.startsWith("http")
+      ? window.location.origin
+      : "http://localhost:3000");
+}
+var API_BASE =
+  (typeof window !== "undefined" && window.API_BASE) || "http://localhost:3000";
 
 document.addEventListener("DOMContentLoaded", function () {
   const formulario = document.querySelector("form");
@@ -30,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
     validarPassword();
   });
 
-  formulario.addEventListener("submit", function (e) {
+  formulario.addEventListener("submit", async function (e) {
     e.preventDefault();
 
     const usuarioValido = validarUsuario();
@@ -38,26 +49,104 @@ document.addEventListener("DOMContentLoaded", function () {
     const rolValido = validarRol();
 
     if (usuarioValido && passwordValido && rolValido) {
-      //VERIFICAR SI USUARIO YA EXISTE
-      if (usuarioExiste(inputUsuario.value.trim())) {
-        modalUsuarioExiste.classList.add("mostrar");
-        return;
+      const usuario = inputUsuario.value.trim();
+      const contrasena = inputPassword.value;
+      const rolFrontend = selectRol.value;
+
+      // Mapear roles del frontend al backend
+      const rolesMap = {
+        factura: "FACTURACION",
+        admin: "ADMINISTRADOR",
+        contabilidad: "CONTABILIDAD",
+      };
+      const rol = rolesMap[rolFrontend] || rolFrontend;
+
+      try {
+        // 1) Verificar si el usuario ya existe en la BD
+        const existeResp = await fetch(
+          `${API_BASE}/api/usuarios/existe/${encodeURIComponent(usuario)}`,
+        );
+        const existeJson = await existeResp.json();
+
+        if (existeJson.success && existeJson.data.existe) {
+          // El usuario ya existe → intentar LOGIN
+          const loginResp = await fetch(`${API_BASE}/api/usuarios/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ usuario, contrasena }),
+          });
+
+          const loginJson = await loginResp.json();
+
+          if (loginJson.success) {
+            // Login exitoso → guardar sesión y redirigir
+            sessionStorage.setItem(
+              "sesionActiva",
+              JSON.stringify({
+                idUsuario: loginJson.data.idUsuario,
+                usuario: loginJson.data.usuario,
+                nombre: loginJson.data.nombre,
+                apellido: loginJson.data.apellido,
+                rol: loginJson.data.rol,
+                fechaLogin: new Date().toISOString(),
+              }),
+            );
+
+            window.location.href = "menu.html";
+          } else {
+            // Credenciales incorrectas
+            mostrarError(
+              inputPassword,
+              "Contraseña incorrecta para este usuario",
+            );
+          }
+          return;
+        }
+
+        // 2) El usuario NO existe → crear (registrar) nuevo usuario
+        const crearResp = await fetch(`${API_BASE}/api/usuarios`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            usuario: usuario,
+            contrasena: contrasena,
+            nombre: usuario,
+            apellido: "-",
+            rol: rol,
+          }),
+        });
+
+        const crearJson = await crearResp.json();
+
+        if (crearJson.success) {
+          // Usuario creado exitosamente → guardar sesión y redirigir
+          sessionStorage.setItem(
+            "sesionActiva",
+            JSON.stringify({
+              idUsuario: crearJson.data.idUsuario,
+              usuario: crearJson.data.usuario,
+              nombre: crearJson.data.nombre,
+              apellido: crearJson.data.apellido,
+              rol: crearJson.data.rol,
+              fechaLogin: new Date().toISOString(),
+            }),
+          );
+
+          alert("✅ Usuario registrado exitosamente");
+          window.location.href = "menu.html";
+        } else if (crearResp.status === 409) {
+          // Conflicto: usuario ya existe (carrera entre verificación y creación)
+          modalUsuarioExiste.classList.add("mostrar");
+        } else {
+          alert("❌ Error al registrar usuario: " + crearJson.message);
+        }
+      } catch (error) {
+        console.error("Error de conexión:", error);
+        alert(
+          "❌ No se pudo conectar al servidor. Asegúrese de que el servidor esté corriendo en " +
+            API_BASE,
+        );
       }
-
-      //GUARDAR USUARIO
-      guardarUsuario();
-
-      //guardar sesión
-      localStorage.setItem(
-        "sesionActiva",
-        JSON.stringify({
-          usuario: inputUsuario.value.trim(),
-          rol: selectRol.value,
-          fechaLogin: new Date().toISOString(),
-        }),
-      );
-
-      window.location.href = "menu.html";
     }
   });
 
@@ -148,27 +237,6 @@ document.addEventListener("DOMContentLoaded", function () {
       item.style.color = "#555";
       item.textContent = "• " + textoBase;
     }
-  }
-
-  // ======================
-  // USUARIOS (LOCALSTORAGE)
-  // ======================
-
-  function usuarioExiste(usuario) {
-    const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
-    return usuarios.some((u) => u.usuario === usuario);
-  }
-
-  function guardarUsuario() {
-    const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
-
-    usuarios.push({
-      usuario: inputUsuario.value.trim(),
-      password: inputPassword.value, // solo demo
-      rol: selectRol.value,
-    });
-
-    localStorage.setItem("usuarios", JSON.stringify(usuarios));
   }
 
   // ======================
